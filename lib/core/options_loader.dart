@@ -16,7 +16,7 @@ Future<Options> loadOptions() async {
     final line = raw.trim();
     if (line.isEmpty) continue;
 
-    if (line.startsWith("[]") && line.endsWith("]")) {
+    if (line.startsWith("[") && line.endsWith("]")) {
       section = line.substring(1, line.length - 1);
       continue;
     }
@@ -40,10 +40,10 @@ Future<Options> loadOptions() async {
   }
 
   return Options(
-    width: width,
-    height: height,
-    primary: primary,
-    secondary: secondary,
-    background: background,
+    width: width ?? 300,
+    height: height ?? 200,
+    primary: primary ?? "#FFFFFF",
+    secondary: secondary ?? "#CCCCCC",
+    background: background ?? "#222222",
   );
 }

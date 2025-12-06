@@ -1,6 +1,5 @@
 <menu name="root">
-  <menu name="Apps">
-    <menu name="Terminal" command="kitty" />
-    <menu name="Navegador" command="firefox" />
-  </menu>
+  <menu name="Terminal" command="kitty" />
+  <menu name="Browser" command="firefox" />
+  <menu name="Files" command="nautilus" />
 </menu>

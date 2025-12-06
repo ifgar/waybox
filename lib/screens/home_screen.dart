@@ -29,17 +29,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (root == null || options == null) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
     final bg = options!.background!;
 
-    if (root == null) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
-    } else {
-      return Scaffold(
-        backgroundColor: _parseColor(bg),
-        body: ListView(children: [MenuWidget(menu: root!)]),
-      );
-    }
+    return Scaffold(
+      backgroundColor: _parseColor(bg),
+      body: ListView(
+        children: [MenuWidget(root: root!, options: options!)],
+      ),
+    );
   }
 }
 
-Color _parseColor(String hex) => Color(int.parse(hex.replaceFirst("#", "0xFF")));
+Color _parseColor(String hex) =>
+    Color(int.parse(hex.replaceFirst("#", "0xFF")));

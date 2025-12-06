@@ -2,16 +2,16 @@ import 'package:flutter/services.dart';
 import 'package:waybox/core/options.dart';
 
 Future<Options> loadOptions() async {
-  final text = await rootBundle.loadString("assets/options.conf");
-  final lines = text.split("\n");
+  final txt = await rootBundle.loadString("assets/options.conf");
+  final lines = txt.split("\n");
 
   String? section;
   double? width;
   double? height;
   int? x;
   int? y;
-  String? primary;
-  String? secondary;
+  String? text;
+  String? hover;
   String? background;
 
   for (final raw in lines) {
@@ -37,8 +37,8 @@ Future<Options> loadOptions() async {
     }
 
     if (section == "theme") {
-      if (key == "primary") primary = value;
-      if (key == "secondary") secondary = value;
+      if (key == "text") text = value;
+      if (key == "hover") hover = value;
       if (key == "background") background = value;
     }
   }
@@ -48,8 +48,8 @@ Future<Options> loadOptions() async {
     height: height ?? 200,
     x: x ?? 100,
     y: y ?? 100,
-    primary: primary ?? "#FFFFFF",
-    secondary: secondary ?? "#CCCCCC",
+    text: text ?? "#FFFFFF",
+    hover: hover ?? "#CCCCCC",
     background: background ?? "#222222",
   );
 }

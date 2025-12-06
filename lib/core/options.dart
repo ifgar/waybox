@@ -5,8 +5,8 @@ class Options {
   final int? x;
   final int? y;
 
-  final String? primary;
-  final String? secondary;
+  final String? text;
+  final String? hover;
   final String? background;
 
   const Options({
@@ -14,8 +14,8 @@ class Options {
     this.height,
     this.x,
     this.y,
-    this.primary,
-    this.secondary,
+    this.text,
+    this.hover,
     this.background,
   });
 }

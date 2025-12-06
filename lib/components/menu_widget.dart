@@ -20,19 +20,26 @@ class MenuWidget extends StatelessWidget {
   }
 
   Widget _buildItem(Menu menu) {
-    return InkWell(
-      onTap: () {
-        if (menu.command != null) {
-          Process.run("bash", ["-c", menu.command!]);
-        }
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-        child: Text(
-          menu.name,
-          style: TextStyle(
-            color: _parseColor(options.primary!),
-            fontSize: 14,
+    return Material(
+      color: Colors.transparent,
+      borderRadius: BorderRadius.circular(6),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(6),
+        hoverColor: _parseColor(options.hover!),
+        onTap: () {
+          if (menu.command != null) {
+            Process.run("bash", ["-c", menu.command!]);
+          }
+        },
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+          child: Text(
+            menu.name,
+            style: TextStyle(
+              color: _parseColor(options.text!),
+              fontSize: 14,
+            ),
           ),
         ),
       ),

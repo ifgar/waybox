@@ -46,5 +46,8 @@ class MenuWidget extends StatelessWidget {
   }
 }
 
-Color _parseColor(String hex) =>
-    Color(int.parse(hex.replaceFirst("#", "0xFF")));
+Color _parseColor(String hex) {
+  hex = hex.trim();
+  if (!hex.startsWith("#")) hex = "#$hex";
+  return Color(int.parse(hex.replaceFirst("#", "0xFF")));
+}

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:waybox/core/menu.dart';
+import 'package:waybox/core/menu_loader.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -8,8 +10,30 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Menu? root;
+
+  @override
+  void initState() {
+    super.initState();
+    loadMenu().then((m) {
+      setState(() {
+        root = m;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Container());
+    if (root == null) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
+    return Scaffold(
+      body: ListView(
+        children: [
+          Text("Root: ${root!.name}"),
+        ],
+      ),
+    );
   }
 }

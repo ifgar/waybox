@@ -14,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Menu? root;
+  List<Menu>? items;
   Options? options;
 
   @override
@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     Future.wait([loadMenu(), loadOptions()]).then((values) {
       setState(() {
-        root = values[0] as Menu;
+        items = values[0] as List<Menu>;
         options = values[1] as Options;
       });
     });
@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (root == null || options == null) {
+    if (items == null || options == null) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
@@ -39,8 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
         windowManager.close();
       },
       child: Scaffold(
-        backgroundColor: _parseColor(options!.background!),
-        body: MenuWidget(root: root!, options: options!),
+        backgroundColor: _parseColor(options!.background ?? "#000000"),
+        body: MenuWidget(items: items!, options: options!),
       ),
     );
   }

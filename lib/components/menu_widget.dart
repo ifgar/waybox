@@ -4,18 +4,17 @@ import 'package:waybox/core/menu.dart';
 import 'package:waybox/core/options.dart';
 
 class MenuWidget extends StatelessWidget {
-  final Menu root;
+  final List<Menu> items;
   final Options options;
 
-  const MenuWidget({super.key, required this.root, required this.options});
+  const MenuWidget({super.key, required this.items, required this.options});
 
   @override
   Widget build(BuildContext context) {
-    final items = root.children ?? [];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: items.map((m) => _buildItem(m)).toList(),
+      children: items.map(_buildItem).toList(),
     );
   }
 

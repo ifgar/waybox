@@ -1,0 +1,6 @@
+<menu name="root">
+  <menu name="Apps">
+    <menu name="Terminal" command="kitty" />
+    <menu name="Navegador" command="firefox" />
+  </menu>
+</menu>

@@ -9,8 +9,16 @@ void main() async {
   final options = await loadOptions();
 
   await windowManager.ensureInitialized();
-  await windowManager.setSize(Size(options.width ?? 300, options.height ?? 200));
+  await windowManager.setSize(
+    Size(options.width ?? 300, options.height ?? 200),
+  );
   await windowManager.setMinimumSize(Size(300, 200));
+
+  if (options.x != null && options.y != null) {
+    await windowManager.setPosition(
+      Offset(options.x!.toDouble(), options.y!.toDouble()),
+    );
+  }
 
   runApp(const MainApp());
 }

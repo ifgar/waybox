@@ -8,6 +8,8 @@ Future<Options> loadOptions() async {
   String? section;
   double? width;
   double? height;
+  int? x;
+  int? y;
   String? primary;
   String? secondary;
   String? background;
@@ -30,6 +32,8 @@ Future<Options> loadOptions() async {
     if (section == "size") {
       if (key == "width") width = double.tryParse(value);
       if (key == "height") height = double.tryParse(value);
+      if (key == "x") x = int.tryParse(value);
+      if (key == "y") y = int.tryParse(value);
     }
 
     if (section == "theme") {
@@ -42,6 +46,8 @@ Future<Options> loadOptions() async {
   return Options(
     width: width ?? 300,
     height: height ?? 200,
+    x: x ?? 100,
+    y: y ?? 100,
     primary: primary ?? "#FFFFFF",
     secondary: secondary ?? "#CCCCCC",
     background: background ?? "#222222",

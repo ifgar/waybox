@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:waybox/core/options_loader.dart';
 import 'package:waybox/screens/home_screen.dart';
+import 'package:window_manager/window_manager.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final options = await loadOptions();
+
+  await windowManager.ensureInitialized();
+  await windowManager.setSize(Size(options.width ?? 300, options.height ?? 200));
+  await windowManager.setMinimumSize(Size(300, 200));
+
   runApp(const MainApp());
 }
 

@@ -4,6 +4,7 @@ import 'package:waybox/core/menu.dart';
 import 'package:waybox/core/menu_loader.dart';
 import 'package:waybox/core/options.dart';
 import 'package:waybox/core/options_loader.dart';
+import 'package:window_manager/window_manager.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -33,12 +34,13 @@ class _HomeScreenState extends State<HomeScreen> {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
-    final bg = options!.background!;
-
-    return Scaffold(
-      backgroundColor: _parseColor(bg),
-      body: ListView(
-        children: [MenuWidget(root: root!, options: options!)],
+    return MouseRegion(
+      onExit: (_) {
+        windowManager.close();
+      },
+      child: Scaffold(
+        backgroundColor: _parseColor(options!.background!),
+        body: MenuWidget(root: root!, options: options!),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:waybox/components/menu_widget.dart';
 import 'package:waybox/core/menu.dart';
 import 'package:waybox/core/menu_loader.dart';
 
@@ -26,14 +27,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     if (root == null) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    } else {
+      return Scaffold(
+        body: ListView(children: [MenuWidget(menu: root!)]),
+      );
     }
-
-    return Scaffold(
-      body: ListView(
-        children: [
-          Text("Root: ${root!.name}"),
-        ],
-      ),
-    );
   }
 }

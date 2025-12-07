@@ -1,9 +1,13 @@
-import 'package:flutter/services.dart';
+import 'dart:io';
+
 import 'package:waybox/core/menu.dart';
 import 'package:xml/xml.dart';
 
 Future<List<Menu>> loadMenu() async {
-  final xmlString = await rootBundle.loadString("assets/waybox.xml");
+  final home = Platform.environment["HOME"];
+  final path = "$home/.config/waybox/waybox.xml";
+  final xmlString = await File(path).readAsString();
+
   final doc = XmlDocument.parse(xmlString);
   final root = doc.rootElement;
 

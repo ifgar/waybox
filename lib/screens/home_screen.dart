@@ -1,10 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:waybox/components/menu_widget.dart';
 import 'package:waybox/core/menu.dart';
 import 'package:waybox/core/menu_loader.dart';
 import 'package:waybox/core/options.dart';
 import 'package:waybox/core/options_loader.dart';
-import 'package:window_manager/window_manager.dart';
 
 /// Main screen of Waybox.
 ///
@@ -59,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return MouseRegion(
       // Close the Waybox popup when the mouse exits the window.
       onExit: (_) {
-        windowManager.close();
+        exit(0);
       },
       child: Scaffold(
         backgroundColor: options.background,

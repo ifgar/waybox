@@ -2,6 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 
+/// Initializes Waybox's user-editable configuration directory.
+///
+/// This function ensures:
+/// - `~/.config/waybox` exists.
+/// - Default config files (`waybox.xml`, `options.conf`) are copied from
+///   assets **only if missing**, so user modifications are never overwritten.
 Future<void> initConfigFiles() async {
   final home = Platform.environment["HOME"];
   final dir = Directory("$home/.config/waybox");
@@ -13,6 +19,11 @@ Future<void> initConfigFiles() async {
   await _copyIfMissing("assets/waybox.xml", "${dir.path}/waybox.xml");
   await _copyIfMissing("assets/options.conf", "${dir.path}/options.conf");
 }
+
+/// Copies a file from assets into the config directory **only if it does not
+/// already exist**.
+///
+/// This prevents overwriting user-customized configuration files during updates.
 
 Future<void> _copyIfMissing(String asset, String dest) async {
   final file = File(dest);

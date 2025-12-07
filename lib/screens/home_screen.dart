@@ -14,23 +14,26 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Menu>? items;
-  Options? options;
+  List<Menu> items = const [];
+  late Options options;
+  bool loading = true;
 
   @override
   void initState() {
     super.initState();
+
     Future.wait([loadMenu(), loadOptions()]).then((values) {
       setState(() {
         items = values[0] as List<Menu>;
         options = values[1] as Options;
+        loading = false;
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (items == null || options == null) {
+    if (loading) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
@@ -39,15 +42,9 @@ class _HomeScreenState extends State<HomeScreen> {
         windowManager.close();
       },
       child: Scaffold(
-        backgroundColor: _parseColor(options!.background ?? "#000000"),
-        body: MenuWidget(items: items!, options: options!),
+        backgroundColor: options.background,
+        body: MenuWidget(items: items, options: options),
       ),
     );
   }
-}
-
-Color _parseColor(String hex) {
-  hex = hex.trim();
-  if (!hex.startsWith("#")) hex = "#$hex";
-  return Color(int.parse(hex.replaceFirst("#", "0xFF")));
 }

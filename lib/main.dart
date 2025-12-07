@@ -7,28 +7,25 @@ import 'package:waybox/screens/home_screen.dart';
 import 'package:window_manager/window_manager.dart';
 
 Future<void> initConfigFiles() async {
-    final home = Platform.environment["HOME"];
-    final dir = Directory("$home/.config/waybox");
+  final home = Platform.environment["HOME"];
+  final dir = Directory("$home/.config/waybox");
 
-    if (!dir.existsSync()) {
-      dir.createSync(recursive: true);
-    }
-
-    await _copyIfMissing("assets/waybox.xml", "${dir.path}/waybox.xml");
-    await _copyIfMissing("assets/options.conf", "${dir.path}/options.conf");
+  if (!dir.existsSync()) {
+    dir.createSync(recursive: true);
   }
 
-  Future<void> _copyIfMissing(String asset, String dest) async {
-      final file = File(dest);
-      if (file.existsSync()) return;
+  await _copyIfMissing("assets/waybox.xml", "${dir.path}/waybox.xml");
+  await _copyIfMissing("assets/options.conf", "${dir.path}/options.conf");
+}
 
-      final data = await rootBundle.load(asset);
-      final bytes = data.buffer.asUint8List(
-        data.offsetInBytes,
-        data.lengthInBytes,
-      );
-      await file.writeAsBytes(bytes);
-    }
+Future<void> _copyIfMissing(String asset, String dest) async {
+  final file = File(dest);
+  if (file.existsSync()) return;
+
+  final data = await rootBundle.load(asset);
+  final bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+  await file.writeAsBytes(bytes);
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,15 +35,11 @@ void main() async {
   final options = await loadOptions();
 
   await windowManager.ensureInitialized();
-  await windowManager.setSize(
-    Size(options.width ?? 300, options.height ?? 200),
-  );
+  await windowManager.setSize(Size(options.width, options.height));
 
-  if (options.x != null && options.y != null) {
-    await windowManager.setPosition(
-      Offset(options.x!.toDouble(), options.y!.toDouble()),
-    );
-  }
+  await windowManager.setPosition(
+    Offset(options.x.toDouble(), options.y.toDouble()),
+  );
 
   runApp(const MainApp());
 }

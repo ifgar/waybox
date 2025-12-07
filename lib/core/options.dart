@@ -1,21 +1,23 @@
+import 'dart:ui';
+
 class Options {
-  final double? width;
-  final double? height;
+  final double width;
+  final double height;
 
-  final int? x;
-  final int? y;
+  final int x;
+  final int y;
 
-  final String? text;
-  final String? hover;
-  final String? background;
+  final Color text;
+  final Color hover;
+  final Color background;
 
   const Options({
-    this.width,
-    this.height,
-    this.x,
-    this.y,
-    this.text,
-    this.hover,
-    this.background,
+    required this.width,
+    required this.height,
+    required this.x,
+    required this.y,
+    required this.text,
+    required this.hover,
+    required this.background,
   });
 }

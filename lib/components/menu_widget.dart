@@ -24,7 +24,7 @@ class MenuWidget extends StatelessWidget {
       borderRadius: BorderRadius.circular(6),
       child: InkWell(
         borderRadius: BorderRadius.circular(6),
-        hoverColor: _parseColor(options.hover!),
+        hoverColor: options.hover,
         onTap: () {
           if (menu.command != null) {
             Process.run("bash", ["-c", menu.command!]);
@@ -36,7 +36,7 @@ class MenuWidget extends StatelessWidget {
           child: Text(
             menu.name,
             style: TextStyle(
-              color: _parseColor(options.text!),
+              color: options.text,
               fontSize: 14,
             ),
           ),
@@ -46,8 +46,3 @@ class MenuWidget extends StatelessWidget {
   }
 }
 
-Color _parseColor(String hex) {
-  hex = hex.trim();
-  if (!hex.startsWith("#")) hex = "#$hex";
-  return Color(int.parse(hex.replaceFirst("#", "0xFF")));
-}

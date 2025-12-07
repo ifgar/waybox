@@ -63,7 +63,10 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       child: Scaffold(
         backgroundColor: options.background,
-        body: MenuWidget(items: items, options: options),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: MenuWidget(items: items, options: options),
+        ),
       ),
     );
   }

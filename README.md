@@ -27,15 +27,68 @@ flutter run
 ```
 
 ## Configuration
-Currently, configuration files are loaded from the `assets/` directory:
+Waybox stores user-editable configuration files in:
 ```
-assets/waybox.xml
-assets/options.conf
+~/.config/waybox/
 ```
-A future update will move configuration to `~/.config/waybox/` for user editing.
+Two files control the entire behavior:
+- **waybox.xml** — defines the menu items  
+- **options.conf** — defines window size, position and colors
+
+These files are automatically created on first launch if missing.  
+You can edit them at any time without rebuilding the app.
 
 ## Usage
-_TBA_
+
+Waybox is typically launched from Waybar or any scriptable launcher.
+
+### Example Waybar module
+```json
+  "custom/waybox": {
+    "format": "",
+    "on-click": "waybox",
+    "tooltip": false
+  },
+```
+
+### Launch manually
+```bash
+waybox
+```
+
+### Edit configuration
+```bash
+nano ~/.config/waybox/waybox.xml
+nano ~/.config/waybox/options.conf
+```
+
+Waybox reloads its configuration on every launch.
+
+## Example configuration
+
+### `waybox.xml`
+```xml
+<waybox>
+  <menu name="Terminal" command="alacritty" />
+  <menu name="Files" command="thunar" />
+  <menu name="Reboot" command="systemctl reboot" />
+</waybox>
+```
+
+### `options.conf`
+```ini
+[size]
+width=300
+height=220
+x=100
+y=100
+
+[theme]
+text=#FFFFFF
+hover=#222222
+background=#000000
+```
+
 
 ## Screenshots
 _TBA_

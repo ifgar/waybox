@@ -28,13 +28,15 @@ void main() async {
   // Configure the native window before building the widget tree.
   await windowManager.ensureInitialized();
 
+  // Hide title bar
+  await windowManager.setTitleBarStyle(
+    TitleBarStyle.hidden,
+    windowButtonVisibility: false,
+  );
+  await windowManager.setAlwaysOnTop(true);
+
   // Apply size from configuration.
   await windowManager.setSize(Size(options.width, options.height));
-
-  // Apply window position only if explicitly defined.
-  await windowManager.setPosition(
-    Offset(options.x.toDouble(), options.y.toDouble()),
-  );
 
   runApp(const MainApp());
 }

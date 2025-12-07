@@ -1,8 +1,12 @@
-import 'package:flutter/services.dart';
+import 'dart:io';
+
 import 'package:waybox/core/options.dart';
 
 Future<Options> loadOptions() async {
-  final txt = await rootBundle.loadString("assets/options.conf");
+  final home = Platform.environment["HOME"];
+  final path = "$home/.config/waybox/options.conf";
+
+  final txt = await File(path).readAsString();
   final lines = txt.split("\n");
 
   String? section;

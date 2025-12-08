@@ -66,6 +66,9 @@ static void my_application_activate(GApplication *application)
 
   g_autoptr(FlDartProject) project = fl_dart_project_new();
   fl_dart_project_set_dart_entrypoint_arguments(project, self->dart_entrypoint_arguments);
+  
+  // Fixes white flicker
+  gtk_widget_set_app_paintable(GTK_WIDGET(window), TRUE);
 
   FlView *view = fl_view_new(project);
 

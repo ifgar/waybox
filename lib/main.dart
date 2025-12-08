@@ -2,41 +2,56 @@ import 'package:flutter/material.dart';
 import 'package:waybox/core/config_init.dart';
 import 'package:waybox/core/options_loader.dart';
 import 'package:waybox/screens/home_screen.dart';
-import 'package:window_manager/window_manager.dart';
+import 'package:wayland_layer_shell/types.dart';
+import 'package:wayland_layer_shell/wayland_layer_shell.dart';
 
 /// Entry point of Waybox.
 ///
-/// The initialization sequence is:
-/// 1. Ensure Flutter bindings are ready.
-/// 2. Initialize the configuration directory (`~/.config/waybox`) and
-///    copy default files if they do not exist.
-/// 3. Load the user-defined UI/window options.
-/// 4. Initialize the window manager and apply size/position.
-/// 5. Launch the main widget tree (`HomeScreen`).
+/// Initialization flow:
+/// 1. Initialize Flutter bindings.
+/// 2. Ensure `~/.config/waybox` exists and populate it with default files
+///    if needed.
+/// 3. Load user UI/window configuration (`options.conf`).
+/// 4. Initialize a Wayland layer-shell surface using `wayland_layer_shell`.
+///    If supported:
+///       - Create a real layer-shell surface (not a normal window),
+///       - Anchor it to the top-left corner,
+///       - Apply user-defined margins as coordinates,
+///       - Set the layer to `overlay`.
+///    If not supported:
+///       - Show a minimal fallback screen.
+/// 5. Launch the Flutter widget tree (`HomeScreen`).
 ///
-/// All user-editable configuration is handled before building the UI.
+/// All positional/sizing behavior is delegated to Wayland layer-shell.
+/// The window is *not* an XDG toplevel, so methods from `window_manager`
+/// do not apply in this mode.
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Ensure configuration files exist in ~/.config/waybox.
-  // Default files are only copied if missing.
   await initConfigFiles();
 
-  // Load visual and window configuration.
   final options = await loadOptions();
 
-  // Configure the native window before building the widget tree.
-  await windowManager.ensureInitialized();
-
-  // Hide title bar
-  await windowManager.setTitleBarStyle(
-    TitleBarStyle.hidden,
-    windowButtonVisibility: false,
+  // Initialize Wayland layer-shell surface.
+  final waylandLayerShellPlugin = WaylandLayerShell();
+  bool isSupported = await waylandLayerShellPlugin.initialize(
+    options.width.toInt(),
+    options.height.toInt(),
   );
-  await windowManager.setAlwaysOnTop(true);
+  if (!isSupported) {
+    runApp(const MaterialApp(home: Center(child: Text('Not supported'))));
+    return;
+  }
 
-  // Apply size from configuration.
-  await windowManager.setSize(Size(options.width, options.height));
+  // Attach surface to top-left.
+  waylandLayerShellPlugin.setAnchor(ShellEdge.edgeLeft, true);
+  waylandLayerShellPlugin.setAnchor(ShellEdge.edgeTop, true);
+
+  // Apply offsets from `options.conf`.
+  waylandLayerShellPlugin.setMargin(ShellEdge.edgeLeft, options.x);
+  waylandLayerShellPlugin.setMargin(ShellEdge.edgeTop, options.y);
+  
+  waylandLayerShellPlugin.setLayer(ShellLayer.layerOverlay);
 
   runApp(const MainApp());
 }

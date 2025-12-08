@@ -37,9 +37,9 @@ class MenuWidget extends StatelessWidget {
   Widget _buildItem(Menu menu) {
     return Material(
       color: Colors.transparent,
-      borderRadius: BorderRadius.circular(6),
+      borderRadius: BorderRadius.circular(4),
       child: InkWell(
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(4),
         hoverColor: options.hover,
         onTap: () {
           final cmd = menu.command;

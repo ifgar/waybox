@@ -53,6 +53,9 @@ void main() async {
   
   waylandLayerShellPlugin.setLayer(ShellLayer.layerOverlay);
 
+  // Change namespace
+  waylandLayerShellPlugin.setNamespace("waybox");
+
   runApp(const MainApp());
 }
 

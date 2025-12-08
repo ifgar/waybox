@@ -9,7 +9,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  wayland_layer_shell: ^1.0.1
+  wayland_layer_shell:
+    git:
+      url: https://github.com/ifgar/wayland_layer_shell.git
+      ref: master
   window_manager: ^0.5.1
   xml: ^6.6.1
 

@@ -22,6 +22,13 @@ static void my_application_activate(GApplication *application)
   GtkWindow *window =
       GTK_WINDOW(gtk_application_window_new(GTK_APPLICATION(application)));
 
+  // Needed to make Scaffold transparent
+  gtk_widget_set_app_paintable(GTK_WIDGET(window), TRUE);
+  gtk_widget_set_visual(
+    GTK_WIDGET(window),
+    gdk_screen_get_rgba_visual(gtk_window_get_screen(window))
+  );
+  
   // Use a header bar when running in GNOME as this is the common style used
   // by applications and is the setup most users will be using (e.g. Ubuntu
   // desktop).
@@ -61,6 +68,12 @@ static void my_application_activate(GApplication *application)
   fl_dart_project_set_dart_entrypoint_arguments(project, self->dart_entrypoint_arguments);
 
   FlView *view = fl_view_new(project);
+
+  // Needed to make Scaffold transparent
+  GdkRGBA background_color;
+  gdk_rgba_parse(&background_color, "#00000000");
+  fl_view_set_background_color(view, &background_color);
+
   gtk_widget_show(GTK_WIDGET(view));
   gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(view));
 

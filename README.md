@@ -97,7 +97,17 @@ text=#FFFFFF
 hover=#222222
 background=#000000
 ```
+#### Field reference
+- **width / height**: window size in pixels.  
+- **x / y**: absolute screen position where the window will appear.
+- **text**: text color in hex format.  
+- **hover**: background color when hovering an item.  
+- **background**: window background color.
 
+#### Notes
+- Missing values fall back to internal defaults.  
+- Changes apply on the next launch.  
+- **Hyprland:** without `layerrule = noanim, waybox` the window will first spawn centered and then “jump” to `(x, y)`, which is undesirable.
 
 ## Screenshot
 ![waybox screenshot](screenshots/waybox.png)

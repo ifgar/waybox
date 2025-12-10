@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:waybox/core/config_init.dart';
 import 'package:waybox/core/options_loader.dart';
@@ -43,18 +45,28 @@ void main() async {
     return;
   }
 
-  // Attach surface to top-left.
-  waylandLayerShellPlugin.setAnchor(ShellEdge.edgeLeft, true);
-  waylandLayerShellPlugin.setAnchor(ShellEdge.edgeTop, true);
-
-  // Apply offsets from `options.conf`.
-  waylandLayerShellPlugin.setMargin(ShellEdge.edgeLeft, options.x);
-  waylandLayerShellPlugin.setMargin(ShellEdge.edgeTop, options.y);
-  
+  // Set layer to overlay.
   waylandLayerShellPlugin.setLayer(ShellLayer.layerOverlay);
+
+  // Anchor to all edges.
+  waylandLayerShellPlugin.setAnchor(ShellEdge.edgeLeft, true);
+  waylandLayerShellPlugin.setAnchor(ShellEdge.edgeRight, true);
+  waylandLayerShellPlugin.setAnchor(ShellEdge.edgeTop, true);
+  waylandLayerShellPlugin.setAnchor(ShellEdge.edgeBottom, true);
 
   // Change namespace
   waylandLayerShellPlugin.setNamespace("waybox");
+
+  // Set exclusive keyboard mode to capture all keyboard input.
+  waylandLayerShellPlugin.setKeyboardMode(
+    ShellKeyboardMode.keyboardModeExclusive,
+  );
+
+  // Initialize callbacks (e.g., for Escape key).
+  WaylandLayerShell.initCallbacks();
+  WaylandLayerShell.onEscape = () {
+    exit(0);
+  };
 
   runApp(const MainApp());
 }

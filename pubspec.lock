@@ -269,7 +269,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: "01316e624e0271a4734296346e798c326c0e0bae"
+      resolved-ref: "59211ddc5604f265672ae063817aaa8962d4a411"
       url: "https://github.com/ifgar/wayland_layer_shell.git"
     source: git
     version: "1.0.1"

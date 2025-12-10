@@ -52,28 +52,48 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // While configuration is loading, display a minimal loading indicator.
     if (loading) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
-    return MouseRegion(
-      // Close the Waybox popup when the mouse exits the window.
-      onExit: (_) {
-        exit(0);
-      },
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Container(
-          decoration: BoxDecoration(
-            color: options.background,
-            borderRadius: BorderRadius.circular(4),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Stack(
+        children: [
+          // Transparent area to detect clicks outside the menu and close Waybox
+          Padding(
+            padding: EdgeInsets.only(right: -options.x.toDouble(), bottom: -options.y.toDouble()),
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                exit(0);
+              },
+              child: Container(color: Colors.transparent),
+            ),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: MenuWidget(items: items, options: options),
+
+          // Menu container positioned according to user-defined offsets.
+          Padding(
+            padding: EdgeInsets.only(left: options.x.toDouble(), top: options.y.toDouble()),
+            child: MouseRegion(
+              onExit: (_) => exit(0),
+              child: IntrinsicWidth(
+                child: IntrinsicHeight(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: options.background,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: MenuWidget(items: items, options: options),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

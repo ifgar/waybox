@@ -61,8 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Stack(
         children: [
           // Transparent area to detect clicks outside the menu and close Waybox
-          Padding(
-            padding: EdgeInsets.only(right: -options.x.toDouble(), bottom: -options.y.toDouble()),
+          Positioned.fill(
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {
@@ -73,8 +72,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
 
           // Menu container positioned according to user-defined offsets.
-          Padding(
-            padding: EdgeInsets.only(left: options.x.toDouble(), top: options.y.toDouble()),
+          Positioned(
+            left: options.x.toDouble(),
+            top: options.y.toDouble(),
             child: MouseRegion(
               onExit: (_) => exit(0),
               child: IntrinsicWidth(

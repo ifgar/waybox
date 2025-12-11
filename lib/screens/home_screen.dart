@@ -78,6 +78,14 @@ class _HomeScreenState extends State<HomeScreen> {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
+    // Try to detect on which monitor Waybox is currently displayed.
+    final detected = detectCurrentMonitor(context);
+    if (detected != null) {
+      debugPrint(
+        "WAYBOX MONITOR => ${detected.name}  reserved = ${detected.reserved}",
+      );
+    }
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(

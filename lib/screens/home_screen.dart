@@ -54,6 +54,24 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  /// Detects which Hyprland monitor matches Flutter's visible viewport size.
+  /// Returns the matching HyprMonitorInfo or null if not found.
+  HyprMonitorInfo? detectCurrentMonitor(BuildContext context) {
+    if (hyprMonitors.isEmpty) return null;
+
+    final screen = MediaQuery.of(context).size;
+    final w = screen.width.round();
+    final h = screen.height.round();
+
+    for (final m in hyprMonitors) {
+      if (m.effectiveWidth == w && m.effectiveHeight == h) {
+        return m;
+      }
+    }
+
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     if (loading) {

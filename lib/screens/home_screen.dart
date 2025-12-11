@@ -40,7 +40,10 @@ class _HomeScreenState extends State<HomeScreen> {
   /// Indicates whether the configuration is still being loaded.
   bool loading = true;
 
+  /// List of Hyprland monitors detected on the system.
   List<HyprMonitorInfo> hyprMonitors = [];
+
+  /// Convenience getter for the Wayland layer-shell plugin.
   WaylandLayerShell get shell => widget.shell;
 
   @override
@@ -63,16 +66,17 @@ class _HomeScreenState extends State<HomeScreen> {
   HyprMonitorInfo? detectCurrentMonitor(BuildContext context) {
     if (hyprMonitors.isEmpty) return null;
 
+    // Get current screen size
     final screen = MediaQuery.of(context).size;
     final w = screen.width.round();
     final h = screen.height.round();
 
+    // Find monitor with matching effective width and height
     for (final m in hyprMonitors) {
       if (m.effectiveWidth == w && m.effectiveHeight == h) {
         return m;
       }
     }
-
     return null;
   }
 

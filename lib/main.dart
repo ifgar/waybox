@@ -68,7 +68,7 @@ void main() async {
     exit(0);
   };
 
-  runApp(const MainApp());
+  runApp(MainApp(shell: waylandLayerShellPlugin));
 }
 
 /// Root widget of the application.
@@ -76,13 +76,14 @@ void main() async {
 /// The UI consists of a single `HomeScreen` rendered without additional
 /// routes, as Waybox is meant to be a lightweight, single-purpose popup.
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  final WaylandLayerShell shell;
+  const MainApp({super.key, required this.shell});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      home: HomeScreen(shell: shell),
     );
   }
 }

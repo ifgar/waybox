@@ -7,6 +7,8 @@ import 'package:waybox/core/menu.dart';
 import 'package:waybox/core/menu_loader.dart';
 import 'package:waybox/core/options.dart';
 import 'package:waybox/core/options_loader.dart';
+import 'package:wayland_layer_shell/types.dart';
+import 'package:wayland_layer_shell/wayland_layer_shell.dart';
 
 /// Main screen of Waybox.
 ///
@@ -21,7 +23,8 @@ import 'package:waybox/core/options_loader.dart';
 /// Window size and position are applied earlier in `main.dart`, immediately
 /// after reading the configuration.
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final WaylandLayerShell shell;
+  const HomeScreen({super.key, required this.shell});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -38,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool loading = true;
 
   List<HyprMonitorInfo> hyprMonitors = [];
+  WaylandLayerShell get shell => widget.shell;
 
   @override
   void initState() {
@@ -84,6 +88,17 @@ class _HomeScreenState extends State<HomeScreen> {
       debugPrint(
         "WAYBOX MONITOR => ${detected.name}  reserved = ${detected.reserved}",
       );
+      final left = -detected.reserved[0];
+      final top = -detected.reserved[1];
+      final right = -detected.reserved[2];
+      final bottom = -detected.reserved[3];
+
+      // Apply margins one by one
+      shell.setMargin(ShellEdge.edgeLeft, left);
+      shell.setMargin(ShellEdge.edgeTop, top);
+      shell.setMargin(ShellEdge.edgeRight, right);
+      shell.setMargin(ShellEdge.edgeBottom, bottom);
+      debugPrint("WAYBOX applied margins: L:$left T:$top R:$right B:$bottom");
     }
 
     return Scaffold(

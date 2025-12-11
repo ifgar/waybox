@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:waybox/components/menu_widget.dart';
+import 'package:waybox/core/hypr_monitors.dart';
 import 'package:waybox/core/menu.dart';
 import 'package:waybox/core/menu_loader.dart';
 import 'package:waybox/core/options.dart';
@@ -36,15 +37,18 @@ class _HomeScreenState extends State<HomeScreen> {
   /// Indicates whether the configuration is still being loaded.
   bool loading = true;
 
+  List<HyprMonitorInfo> hyprMonitors = [];
+
   @override
   void initState() {
     super.initState();
 
     // Load menu entries and UI options in parallel to reduce startup time.
-    Future.wait([loadMenu(), loadOptions()]).then((values) {
+    Future.wait([loadMenu(), loadOptions(), loadHyprMonitors()]).then((values) {
       setState(() {
         items = values[0] as List<Menu>;
         options = values[1] as Options;
+        hyprMonitors = values[2] as List<HyprMonitorInfo>;
         loading = false;
       });
     });

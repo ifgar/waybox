@@ -61,7 +61,27 @@ void main() async {
     exit(0);
   };
 
+  // Kill any previous instance.
+  await _killPreviousInstance();
+
   runApp(MainApp(shell: waylandLayerShellPlugin));
+}
+
+/// Kills any previous instance of the application by reading its PID
+/// from a temporary file and sending it a SIGTERM signal.
+Future<void> _killPreviousInstance() async {
+  final pidFile = File("${Directory.systemTemp.path}/waybox.pid");
+
+  if (await pidFile.exists()) {
+    final oldPid = int.tryParse(await pidFile.readAsString());
+    if (oldPid != null && oldPid != pid) {
+      try {
+        Process.killPid(oldPid, ProcessSignal.sigterm);
+      } catch (_) {}
+    }
+  }
+
+  await pidFile.writeAsString('$pid');
 }
 
 /// Root widget of the application.

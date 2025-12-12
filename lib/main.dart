@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:waybox/core/config_init.dart';
-import 'package:waybox/core/options_loader.dart';
 import 'package:waybox/screens/home_screen.dart';
 import 'package:wayland_layer_shell/types.dart';
 import 'package:wayland_layer_shell/wayland_layer_shell.dart';
@@ -13,8 +12,7 @@ import 'package:wayland_layer_shell/wayland_layer_shell.dart';
 /// 1. Initialize Flutter bindings.
 /// 2. Ensure `~/.config/waybox` exists and populate it with default files
 ///    if needed.
-/// 3. Load user UI/window configuration (`options.conf`).
-/// 4. Initialize a Wayland layer-shell surface using `wayland_layer_shell`.
+/// 3. Initialize a Wayland layer-shell surface using `wayland_layer_shell`.
 ///    If supported:
 ///       - Create a real layer-shell surface (not a normal window),
 ///       - Anchor it to the top-left corner,
@@ -22,7 +20,7 @@ import 'package:wayland_layer_shell/wayland_layer_shell.dart';
 ///       - Set the layer to `overlay`.
 ///    If not supported:
 ///       - Show a minimal fallback screen.
-/// 5. Launch the Flutter widget tree (`HomeScreen`).
+/// 4. Launch the Flutter widget tree (`HomeScreen`).
 ///
 /// All positional/sizing behavior is delegated to Wayland layer-shell.
 /// The window is *not* an XDG toplevel, so methods from `window_manager`
@@ -32,14 +30,9 @@ void main() async {
 
   await initConfigFiles();
 
-  final options = await loadOptions();
-
   // Initialize Wayland layer-shell surface.
   final waylandLayerShellPlugin = WaylandLayerShell();
-  bool isSupported = await waylandLayerShellPlugin.initialize(
-    options.width.toInt(),
-    options.height.toInt(),
-  );
+  bool isSupported = await waylandLayerShellPlugin.initialize();
   if (!isSupported) {
     runApp(const MaterialApp(home: Center(child: Text('Not supported'))));
     return;

@@ -54,7 +54,7 @@ void main(List<String> args) async {
 
   // Set exclusive keyboard mode to capture all keyboard input.
   waylandLayerShellPlugin.setKeyboardMode(
-    ShellKeyboardMode.keyboardModeExclusive,
+    ShellKeyboardMode.keyboardModeOnDemand
   );
 
   // Initialize callbacks (e.g., for Escape key).

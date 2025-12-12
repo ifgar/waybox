@@ -55,7 +55,11 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
 
     // Load menu entries and UI options in parallel to reduce startup time.
-    Future.wait([loadMenu(), loadOptions(), loadHyprMonitors()]).then((values) {
+    Future.wait([
+      loadMenu(fileName: widget.menuFile),
+      loadOptions(),
+      loadHyprMonitors(),
+    ]).then((values) {
       setState(() {
         items = values[0] as List<Menu>;
         options = values[1] as Options;

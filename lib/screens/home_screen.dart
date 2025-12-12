@@ -46,6 +46,9 @@ class _HomeScreenState extends State<HomeScreen> {
   /// Convenience getter for the Wayland layer-shell plugin.
   WaylandLayerShell get shell => widget.shell;
 
+  /// Whether to apply monitor-specific margins based on reserved areas.
+  static const bool _applyMargins = false;
+
   @override
   void initState() {
     super.initState();
@@ -59,11 +62,17 @@ class _HomeScreenState extends State<HomeScreen> {
         loading = false;
       });
     });
+
+    // After the first frame, apply monitor-specific margins if possible.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_applyMargins) return;
+      _applyMonitorMargins(context);
+    });
   }
 
   /// Detects which Hyprland monitor matches Flutter's visible viewport size.
   /// Returns the matching HyprMonitorInfo or null if not found.
-  HyprMonitorInfo? detectCurrentMonitor(BuildContext context) {
+  HyprMonitorInfo? _detectCurrentMonitor(BuildContext context) {
     if (hyprMonitors.isEmpty) return null;
 
     // Get current screen size
@@ -80,18 +89,16 @@ class _HomeScreenState extends State<HomeScreen> {
     return null;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    if (loading) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
-    }
-
-    // Try to detect on which monitor Waybox is currently displayed.
-    final detected = detectCurrentMonitor(context);
+  /// Applies margins to the layer-shell surface based on the detected monitor's
+  /// reserved areas. Allows overlapping with panels/docks.
+  void _applyMonitorMargins(BuildContext context) {
+    final detected = _detectCurrentMonitor(context);
     if (detected != null) {
       debugPrint(
         "WAYBOX MONITOR => ${detected.name}  reserved = ${detected.reserved}",
       );
+
+      // Negate reserved values to get margins
       final left = -detected.reserved[0];
       final top = -detected.reserved[1];
       final right = -detected.reserved[2];
@@ -103,6 +110,13 @@ class _HomeScreenState extends State<HomeScreen> {
       shell.setMargin(ShellEdge.edgeRight, right);
       shell.setMargin(ShellEdge.edgeBottom, bottom);
       debugPrint("WAYBOX applied margins: L:$left T:$top R:$right B:$bottom");
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (loading) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     return Scaffold(

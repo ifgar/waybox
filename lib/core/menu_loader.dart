@@ -12,9 +12,9 @@ import 'package:xml/xml.dart';
 /// - Ignores any `<menu>` elements missing a valid `name` attribute.
 ///
 /// The goal is to remain stable under any user-caused configuration error.
-Future<List<Menu>> loadMenu() async {
+Future<List<Menu>> loadMenu({String fileName = "waybox.xml"}) async {
   final home = Platform.environment["HOME"];
-  final path = "$home/.config/waybox/waybox.xml";
+  final path = "$home/.config/waybox/$fileName";
   final file = File(path);
 
   // If the config file is missing, Waybox still runs but displays no menu.

@@ -24,7 +24,8 @@ import 'package:wayland_layer_shell/wayland_layer_shell.dart';
 /// after reading the configuration.
 class HomeScreen extends StatefulWidget {
   final WaylandLayerShell shell;
-  const HomeScreen({super.key, required this.shell});
+  final String menuFile;
+  const HomeScreen({super.key, required this.shell, required this.menuFile});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();

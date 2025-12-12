@@ -25,10 +25,12 @@ import 'package:wayland_layer_shell/wayland_layer_shell.dart';
 /// All positional/sizing behavior is delegated to Wayland layer-shell.
 /// The window is *not* an XDG toplevel, so methods from `window_manager`
 /// do not apply in this mode.
-void main() async {
+void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await initConfigFiles();
+
+  final menuFile = args.isNotEmpty ? args[0] : "waybox.xml";
 
   // Initialize Wayland layer-shell surface.
   final waylandLayerShellPlugin = WaylandLayerShell();
@@ -64,7 +66,7 @@ void main() async {
   // Kill any previous instance.
   await _killPreviousInstance();
 
-  runApp(MainApp(shell: waylandLayerShellPlugin));
+  runApp(MainApp(shell: waylandLayerShellPlugin, menuFile: menuFile));
 }
 
 /// Kills any previous instance of the application by reading its PID
@@ -90,13 +92,14 @@ Future<void> _killPreviousInstance() async {
 /// routes, as Waybox is meant to be a lightweight, single-purpose popup.
 class MainApp extends StatelessWidget {
   final WaylandLayerShell shell;
-  const MainApp({super.key, required this.shell});
+  final String menuFile;
+  const MainApp({super.key, required this.shell, required this.menuFile});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(shell: shell),
+      home: HomeScreen(shell: shell, menuFile: menuFile),
     );
   }
 }

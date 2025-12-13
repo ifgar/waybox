@@ -149,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: IntrinsicWidth(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: theme.background,
+                    color: theme.menuBackground,
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Padding(

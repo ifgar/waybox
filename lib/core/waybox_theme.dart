@@ -10,18 +10,26 @@ import 'dart:ui';
 /// All fields are non-nullable and validated in the loader, ensuring that
 /// the UI never receives invalid or missing configuration values.
 class WayboxTheme {
+  /// Background color used for the main popup container.
+  final Color menuBackground;
+
+  /// Border radius applied to the popup window.
+  final int menuRadius;
+
   /// Text color used for menu item labels.
-  final Color text;
+  final Color itemText;
 
   /// Background color applied when hovering over a menu item.
-  final Color hover;
+  final Color itemHover;
 
-  /// Background color used for the main popup container.
-  final Color background;
+  /// Text color applied when hovering over a menu item.
+  final Color itemTextHover;
 
   const WayboxTheme({
-    required this.text,
-    required this.hover,
-    required this.background,
+    required this.menuBackground,
+    required this.menuRadius,
+    required this.itemText,
+    required this.itemHover,
+    required this.itemTextHover,
   });
 }

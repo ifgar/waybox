@@ -40,9 +40,12 @@ Future<WayboxTheme> loadTheme() async {
   String? section;
 
   // Initialize values with defaults.
-  Color text = _defaults.text;
-  Color hover = _defaults.hover;
-  Color background = _defaults.background;
+  Color background = _defaults.menuBackground;
+  int radius = _defaults.menuRadius;
+
+  Color text = _defaults.itemText;
+  Color hover = _defaults.itemHover;
+  Color hoverText = _defaults.itemTextHover;
 
   for (final raw in lines) {
     final line = raw.trim();
@@ -63,25 +66,39 @@ Future<WayboxTheme> loadTheme() async {
     final key = parts[0].trim();
     final value = parts[1].trim();
 
-    if (section == "theme") {
-      // Colors are validated via a strict hex parser.
-      if (key == "text") text = _parseColor(value, _defaults.text);
-      if (key == "hover") hover = _parseColor(value, _defaults.hover);
+    if (section == "menu") {
       if (key == "background") {
-        background = _parseColor(value, _defaults.background);
+        background = _parseColor(value, _defaults.menuBackground);
+      }
+      if (key == "radius") radius = int.tryParse(value) ?? 4;
+    }
+
+    if (section == "item") {
+      if (key == "text") text = _parseColor(value, _defaults.itemText);
+      if (key == "hover") hover = _parseColor(value, _defaults.itemHover);
+      if (key == "hoverText") {
+        hoverText = _parseColor(value, _defaults.itemTextHover);
       }
     }
   }
 
-  return WayboxTheme(text: text, hover: hover, background: background);
+  return WayboxTheme(
+    menuBackground: background,
+    menuRadius: radius,
+    itemText: text,
+    itemHover: hover,
+    itemTextHover: hoverText,
+  );
 }
 
 /// Built-in fallback configuration returned when the user config is missing,
 /// unreadable or partially invalid.
 final _defaults = WayboxTheme(
-  text: Color(0xFFFFFFFF),
-  hover: Color(0xFF222222),
-  background: Color(0xFF000000),
+  menuBackground: Color(0xFF000000),
+  menuRadius: 4,
+  itemText: Color(0xFFFFFFFF),
+  itemHover: Color(0xFF222222),
+  itemTextHover: Color(0xFFFFFFFF),
 );
 
 /// Parses a color from a hex string in the formats:

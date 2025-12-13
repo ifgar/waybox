@@ -40,7 +40,7 @@ class MenuWidget extends StatelessWidget {
       borderRadius: BorderRadius.circular(4),
       child: InkWell(
         borderRadius: BorderRadius.circular(4),
-        hoverColor: theme.hover,
+        hoverColor: theme.itemHover,
         onTap: () {
           final cmd = menu.command;
           if (cmd != null && cmd.trim().isNotEmpty) {
@@ -53,7 +53,7 @@ class MenuWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
           child: Text(
             menu.name,
-            style: TextStyle(color: theme.text, fontSize: 14),
+            style: TextStyle(color: theme.itemText, fontSize: 14),
           ),
         ),
       ),

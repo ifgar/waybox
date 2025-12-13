@@ -44,9 +44,6 @@ Future<Options> loadOptions() async {
   String? section;
 
   // Initialize values with defaults.
-  int x = _defaults.x;
-  int y = _defaults.y;
-
   Color text = _defaults.text;
   Color hover = _defaults.hover;
   Color background = _defaults.background;
@@ -70,12 +67,6 @@ Future<Options> loadOptions() async {
     final key = parts[0].trim();
     final value = parts[1].trim();
 
-    if (section == "coords") {
-      // Numeric parsing with safe fallback
-      if (key == "x") x = int.tryParse(value) ?? _defaults.x;
-      if (key == "y") y = int.tryParse(value) ?? _defaults.y;
-    }
-
     if (section == "theme") {
       // Colors are validated via a strict hex parser.
       if (key == "text") text = _parseColor(value, _defaults.text);
@@ -86,8 +77,6 @@ Future<Options> loadOptions() async {
   }
 
   return Options(
-    x: x,
-    y: y,
     text: text,
     hover: hover,
     background: background,
@@ -97,8 +86,6 @@ Future<Options> loadOptions() async {
 /// Built-in fallback configuration returned when the user config is missing,
 /// unreadable or partially invalid.
 final _defaults = Options(
-  x: 100,
-  y: 100,
   text: Color(0xFFFFFFFF),
   hover: Color(0xFF222222),
   background: Color(0xFF000000),

@@ -145,14 +145,16 @@ class _HomeScreenState extends State<HomeScreen> {
             top: options.y.toDouble(),
             child: MouseRegion(
               onExit: (_) => exit(0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: options.background,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: MenuWidget(items: items, options: options),
+              child: IntrinsicWidth(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: options.background,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: MenuWidget(items: items, options: options),
+                  ),
                 ),
               ),
             ),

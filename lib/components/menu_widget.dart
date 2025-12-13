@@ -49,7 +49,6 @@ class MenuWidget extends StatelessWidget {
           }
         },
         child: Container(
-          width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
           child: Text(
             menu.name,

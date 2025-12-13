@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:waybox/core/cli_args.dart';
 import 'package:waybox/core/config_init.dart';
 import 'package:waybox/screens/home_screen.dart';
 import 'package:wayland_layer_shell/types.dart';
@@ -30,7 +31,7 @@ void main(List<String> args) async {
 
   await initConfigFiles();
 
-  final menuFile = args.isNotEmpty ? args[0] : "waybox.xml";
+  final cliArgs = parseCliArgs(args);
 
   // Initialize Wayland layer-shell surface.
   final waylandLayerShellPlugin = WaylandLayerShell();
@@ -66,7 +67,7 @@ void main(List<String> args) async {
   // Kill any previous instance.
   await _killPreviousInstance();
 
-  runApp(MainApp(shell: waylandLayerShellPlugin, menuFile: menuFile));
+  runApp(MainApp(shell: waylandLayerShellPlugin, cliArgs: cliArgs));
 }
 
 /// Kills any previous instance of the application by reading its PID
@@ -92,14 +93,14 @@ Future<void> _killPreviousInstance() async {
 /// routes, as Waybox is meant to be a lightweight, single-purpose popup.
 class MainApp extends StatelessWidget {
   final WaylandLayerShell shell;
-  final String menuFile;
-  const MainApp({super.key, required this.shell, required this.menuFile});
+  final CliArgs cliArgs;
+  const MainApp({super.key, required this.shell, required this.cliArgs});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(shell: shell, menuFile: menuFile),
+      home: HomeScreen(shell: shell, cliArgs: cliArgs),
     );
   }
 }

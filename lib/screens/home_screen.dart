@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:waybox/components/menu_widget.dart';
+import 'package:waybox/core/cli_args.dart';
 import 'package:waybox/core/hypr_monitors.dart';
 import 'package:waybox/core/menu.dart';
 import 'package:waybox/core/menu_loader.dart';
@@ -24,8 +25,8 @@ import 'package:wayland_layer_shell/wayland_layer_shell.dart';
 /// after reading the configuration.
 class HomeScreen extends StatefulWidget {
   final WaylandLayerShell shell;
-  final String menuFile;
-  const HomeScreen({super.key, required this.shell, required this.menuFile});
+  final CliArgs cliArgs;
+  const HomeScreen({super.key, required this.shell, required this.cliArgs});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -56,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // Load menu entries and UI options in parallel to reduce startup time.
     Future.wait([
-      loadMenu(fileName: widget.menuFile),
+      loadMenu(fileName: widget.cliArgs.menuFile),
       loadOptions(),
       loadHyprMonitors(),
     ]).then((values) {
@@ -141,8 +142,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
           // Menu container positioned according to user-defined offsets.
           Positioned(
-            left: options.x.toDouble(),
-            top: options.y.toDouble(),
+            left: widget.cliArgs.x?.toDouble() ?? 0.0,
+            top: widget.cliArgs.y?.toDouble() ?? 0.0,
             child: MouseRegion(
               onExit: (_) => exit(0),
               child: IntrinsicWidth(

@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 ///
 /// This function ensures:
 /// - `~/.config/waybox` exists.
-/// - Default config files (`waybox.xml`, `options.conf`) are copied from
+/// - Default config files (`waybox.xml`, `theme.conf`) are copied from
 ///   assets **only if missing**, so user modifications are never overwritten.
 Future<void> initConfigFiles() async {
   final home = Platform.environment["HOME"];
@@ -17,7 +17,7 @@ Future<void> initConfigFiles() async {
   }
 
   await _copyIfMissing("assets/waybox.xml", "${dir.path}/waybox.xml");
-  await _copyIfMissing("assets/options.conf", "${dir.path}/options.conf");
+  await _copyIfMissing("assets/theme.conf", "${dir.path}/theme.conf");
 }
 
 /// Copies a file from assets into the config directory **only if it does not

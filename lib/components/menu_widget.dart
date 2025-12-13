@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:waybox/core/menu.dart';
-import 'package:waybox/core/options.dart';
+import 'package:waybox/core/waybox_theme.dart';
 
 /// Renders the list of menu entries inside the Waybox popup window.
 ///
@@ -9,15 +9,15 @@ import 'package:waybox/core/options.dart';
 /// command (if any) is executed via `bash -c`.
 ///
 /// Visual appearance (text color, hover color, background) is controlled by
-/// the user configuration defined in `Options`.
+/// the user configuration defined in `WayboxTheme`.
 class MenuWidget extends StatelessWidget {
   /// The list of menu entries parsed from `waybox.xml`.
   final List<Menu> items;
 
-  /// Global theme and layout options loaded from `options.conf`.
-  final Options options;
+  /// Global theme loaded from `theme.conf`.
+  final WayboxTheme theme;
 
-  const MenuWidget({super.key, required this.items, required this.options});
+  const MenuWidget({super.key, required this.items, required this.theme});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class MenuWidget extends StatelessWidget {
       borderRadius: BorderRadius.circular(4),
       child: InkWell(
         borderRadius: BorderRadius.circular(4),
-        hoverColor: options.hover,
+        hoverColor: theme.hover,
         onTap: () {
           final cmd = menu.command;
           if (cmd != null && cmd.trim().isNotEmpty) {
@@ -53,7 +53,7 @@ class MenuWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
           child: Text(
             menu.name,
-            style: TextStyle(color: options.text, fontSize: 14),
+            style: TextStyle(color: theme.text, fontSize: 14),
           ),
         ),
       ),

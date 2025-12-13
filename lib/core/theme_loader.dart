@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:waybox/core/options.dart';
+import 'package:waybox/core/waybox_theme.dart';
 
-/// Loads Waybox UI and layout options from `~/.config/waybox/options.conf`.
+/// Loads Waybox UI from `~/.config/waybox/theme.conf`.
 ///
 /// The loader is designed to be fault-tolerant:
 /// - If the file does not exist → returns default values.
@@ -14,18 +14,14 @@ import 'package:waybox/core/options.dart';
 ///
 /// Supported structure:
 /// ```ini
-/// [coords]
-/// x=100
-/// y=100
-///
 /// [theme]
 /// text=#FFFFFF
 /// hover=#222222
 /// background=#000000
 /// ```
-Future<Options> loadOptions() async {
+Future<WayboxTheme> loadTheme() async {
   final home = Platform.environment["HOME"];
-  final path = "$home/.config/waybox/options.conf";
+  final path = "$home/.config/waybox/theme.conf";
   final file = File(path);
 
   // If configuration is missing, use built-in safe defaults.
@@ -52,7 +48,7 @@ Future<Options> loadOptions() async {
     final line = raw.trim();
     if (line.isEmpty) continue;
 
-    // Identify section headers like [size] or [theme]
+    // Identify section headers
     if (line.startsWith("[") && line.endsWith("]")) {
       section = line.substring(1, line.length - 1);
       continue;
@@ -71,21 +67,18 @@ Future<Options> loadOptions() async {
       // Colors are validated via a strict hex parser.
       if (key == "text") text = _parseColor(value, _defaults.text);
       if (key == "hover") hover = _parseColor(value, _defaults.hover);
-      if (key == "background")
+      if (key == "background") {
         background = _parseColor(value, _defaults.background);
+      }
     }
   }
 
-  return Options(
-    text: text,
-    hover: hover,
-    background: background,
-  );
+  return WayboxTheme(text: text, hover: hover, background: background);
 }
 
 /// Built-in fallback configuration returned when the user config is missing,
 /// unreadable or partially invalid.
-final _defaults = Options(
+final _defaults = WayboxTheme(
   text: Color(0xFFFFFFFF),
   hover: Color(0xFF222222),
   background: Color(0xFF000000),

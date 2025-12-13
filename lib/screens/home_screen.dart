@@ -6,15 +6,15 @@ import 'package:waybox/core/cli_args.dart';
 import 'package:waybox/core/hypr_monitors.dart';
 import 'package:waybox/core/menu.dart';
 import 'package:waybox/core/menu_loader.dart';
-import 'package:waybox/core/options.dart';
-import 'package:waybox/core/options_loader.dart';
+import 'package:waybox/core/waybox_theme.dart';
+import 'package:waybox/core/theme_loader.dart';
 import 'package:wayland_layer_shell/types.dart';
 import 'package:wayland_layer_shell/wayland_layer_shell.dart';
 
 /// Main screen of Waybox.
 ///
 /// Responsibilities:
-/// - Loads menu entries (`waybox.xml`) and UI options (`options.conf`)
+/// - Loads menu entries (`waybox.xml`) and UI theme (`theme.conf`)
 ///   asynchronously during initialization.
 /// - Renders the interactive menu through `MenuWidget`.
 /// - Applies the background color defined by the user.
@@ -36,8 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
   /// Parsed list of menu entries defined in `waybox.xml`.
   List<Menu> items = const [];
 
-  /// UI options parsed from `options.conf`. Initialized after loading completes.
-  late Options options;
+  /// UI theme parsed from `theme.conf`. Initialized after loading completes.
+  late WayboxTheme theme;
 
   /// Indicates whether the configuration is still being loaded.
   bool loading = true;
@@ -55,15 +55,15 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    // Load menu entries and UI options in parallel to reduce startup time.
+    // Load menu entries and UI theme in parallel to reduce startup time.
     Future.wait([
       loadMenu(fileName: widget.cliArgs.menuFile),
-      loadOptions(),
+      loadTheme(),
       loadHyprMonitors(),
     ]).then((values) {
       setState(() {
         items = values[0] as List<Menu>;
-        options = values[1] as Options;
+        theme = values[1] as WayboxTheme;
         hyprMonitors = values[2] as List<HyprMonitorInfo>;
         loading = false;
       });
@@ -149,12 +149,12 @@ class _HomeScreenState extends State<HomeScreen> {
               child: IntrinsicWidth(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: options.background,
+                    color: theme.background,
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: MenuWidget(items: items, options: options),
+                    child: MenuWidget(items: items, theme: theme),
                   ),
                 ),
               ),

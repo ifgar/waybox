@@ -1,15 +1,15 @@
 import 'dart:ui';
 
-/// Holds all configurable UI and window parameters for Waybox.
+/// Holds all configurable UI for Waybox.
 ///
-/// Values are loaded from `~/.config/waybox/options.conf` and determine:
+/// Values are loaded from `~/.config/waybox/theme.conf` and determine:
 /// - text color,
 /// - hover color for menu items,
 /// - background color for the entire menu popup.
 ///
 /// All fields are non-nullable and validated in the loader, ensuring that
 /// the UI never receives invalid or missing configuration values.
-class Options {
+class WayboxTheme {
   /// Text color used for menu item labels.
   final Color text;
 
@@ -19,7 +19,7 @@ class Options {
   /// Background color used for the main popup container.
   final Color background;
 
-  const Options({
+  const WayboxTheme({
     required this.text,
     required this.hover,
     required this.background,

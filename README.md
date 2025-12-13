@@ -9,9 +9,9 @@ Fully self-contained Flutter binary with Wayland layer-shell support.
 
 ## Features
 - Configurable single-level menu via `waybox.xml`.
-- Customizable colors, window size and coordinates via `options.conf`.
+- Customizable appearance via `theme.conf`.
+- CLI arguments for menu selection and positioning (`--menu`, `--x`, `--y`).
 - Launch applications using plain Bash commands.
-- Auto-close when the cursor leaves the window.
 - Native Wayland layer-shell integration.
 
 ## Requirements
@@ -21,7 +21,7 @@ Fully self-contained Flutter binary with Wayland layer-shell support.
 ## Installation
 ### RPM package (recommended)
 ```bash
-sudo dnf install waybox-1.0.0-x86_64.rpm
+sudo dnf install waybox-1.1.0-x86_64.rpm
 ```
 
 ### From source
@@ -48,34 +48,14 @@ Waybox stores user-editable configuration files in:
 ```
 ~/.config/waybox/
 ```
-Files:
-- **waybox.xml** — defines the menu items  .
-- **options.conf** — defines window size, position and colors.
 
 These files are automatically created on first launch if missing. 
-You can edit them at any time without rebuilding the app.
-### Edit configuration
-```bash
-nano ~/.config/waybox/waybox.xml
-nano ~/.config/waybox/options.conf
-```
+You can edit them at any time without rebuilding the app.  
+`waybox.xml` defines the menu items while `theme.conf` defines window and items appearance.
 
-## Usage
-Waybox is typically launched from Waybar or any scriptable launcher.
 
-### Example Waybar module
-```json
-  "custom/waybox": {
-    "format": "",
-    "on-click": "waybox",
-    "tooltip": false
-  },
-```
-
-Waybox reloads its configuration on every launch.
-
-## Example configuration
-### `waybox.xml`
+### Configuration files
+#### `waybox.xml`
 ```xml
 <menu name="root">
   <menu name="Calculator" command="gnome-calculator" />
@@ -84,30 +64,63 @@ Waybox reloads its configuration on every launch.
 </menu>
 ```
 
-### `options.conf`
+#### `theme.conf`
 ```ini
-[size]
-width=300
-height=220
-x=100
-y=100
+[menu]
+background= #1F2335
+radius= 4
 
-[theme]
-text=#FFFFFF
-hover=#222222
-background=#000000
+[item]
+text= #C0CAF5
+hover= #292E42
+hoverText= #7DCFFF
 ```
+
 #### Field reference
-- **width / height**: window size in pixels.  
-- **x / y**: absolute screen position where the window will appear.
-- **text**: text color in hex format.  
-- **hover**: background color when hovering an item.  
 - **background**: window background color.
+- **radius**: window border radius.
+- **text**: item text color.  
+- **hover**: item background color while hovering.  
+- **hoverText**: item text color while hovering.
 
 #### Notes
 - Missing values fall back to internal defaults.  
 - Changes apply on the next launch.  
 - **Hyprland:** without `layerrule = noanim, waybox` the window will first spawn centered and then “jump” to `(x, y)`, which is undesirable.
+
+
+## Usage
+Waybox is typically launched from Waybar or any scriptable launcher.
+
+### Example Waybar module
+```json
+  "custom/waybox": {
+    "format": "",
+    "on-click": "waybox --x 2290 --y 4",
+    "tooltip": false
+  },
+```
+
+Waybox reloads its configuration on every launch.  
+`--x` and `--y` define the coordinates in which waybox will appear.
+
+### Multiple instances
+You can have as many instances of waybox as you desire. Just specify a different XML file with `--menu`
+```json
+  "custom/waybox1": {
+    "format": "",
+    "on-click": "waybox --x 1820 --y 4",
+    "tooltip": false
+  },
+
+  "custom/waybox2": {
+    "format": "",
+    "on-click": "waybox --menu waybox2.xml --x 1720 --y 4",
+    "tooltip": false
+  },
+```
+Defaults to `waybox.xml` when `--menu` is omitted.
+
 
 ## Screenshot
 ![waybox screenshot](screenshots/waybox.png)

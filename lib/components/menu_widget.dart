@@ -25,35 +25,58 @@ class MenuWidget extends StatelessWidget {
     // handles overall window layout and background color.
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: items.map(_buildItem).toList(),
+      children: items.map((m) => _MenuItem(menu: m, theme: theme)).toList(),
     );
   }
+}
 
-  /// Builds an individual menu entry widget.
-  ///
-  /// - Applies hover color using `InkWell`.
-  /// - Executes the defined command when tapped.
-  /// - Falls back safely if command is empty.
-  Widget _buildItem(Menu menu) {
+/// Individual menu item widget.
+/// Tappable and highlights on hover.
+/// Executes the associated command when clicked.
+class _MenuItem extends StatefulWidget {
+  final Menu menu;
+  final WayboxTheme theme;
+
+  const _MenuItem({required this.menu, required this.theme});
+
+  @override
+  State<_MenuItem> createState() => __MenuItemState();
+}
+
+class __MenuItemState extends State<_MenuItem> {
+  bool isHovering = false;
+
+  @override
+  Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
       borderRadius: BorderRadius.circular(4),
       child: InkWell(
         borderRadius: BorderRadius.circular(4),
-        hoverColor: theme.itemHover,
+        hoverColor: widget.theme.itemHover,
         onTap: () {
-          final cmd = menu.command;
+          final cmd = widget.menu.command;
           if (cmd != null && cmd.trim().isNotEmpty) {
             // Execute the user-defined command in a bash shell.
             Process.run("bash", ["-c", cmd.trim()]);
           }
         },
+        onHover: (value) {
+          setState(() {
+            isHovering = value;
+          });
+        },
         child: Container(
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
           child: Text(
-            menu.name,
-            style: TextStyle(color: theme.itemText, fontSize: 14),
+            widget.menu.name,
+            style: TextStyle(
+              color: isHovering
+                  ? widget.theme.itemTextHover
+                  : widget.theme.itemText,
+              fontSize: 14,
+            ),
           ),
         ),
       ),

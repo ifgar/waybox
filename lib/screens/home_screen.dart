@@ -150,7 +150,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Container(
                   decoration: BoxDecoration(
                     color: theme.menuBackground,
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(
+                      theme.menuRadius.toDouble(),
+                    ),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),

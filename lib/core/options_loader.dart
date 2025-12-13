@@ -14,9 +14,7 @@ import 'package:waybox/core/options.dart';
 ///
 /// Supported structure:
 /// ```ini
-/// [size]
-/// width=300
-/// height=200
+/// [coords]
 /// x=100
 /// y=100
 ///
@@ -46,8 +44,6 @@ Future<Options> loadOptions() async {
   String? section;
 
   // Initialize values with defaults.
-  double width = _defaults.width;
-  double height = _defaults.height;
   int x = _defaults.x;
   int y = _defaults.y;
 
@@ -74,10 +70,8 @@ Future<Options> loadOptions() async {
     final key = parts[0].trim();
     final value = parts[1].trim();
 
-    if (section == "size") {
+    if (section == "coords") {
       // Numeric parsing with safe fallback
-      if (key == "width") width = double.tryParse(value) ?? _defaults.width;
-      if (key == "height") height = double.tryParse(value) ?? _defaults.height;
       if (key == "x") x = int.tryParse(value) ?? _defaults.x;
       if (key == "y") y = int.tryParse(value) ?? _defaults.y;
     }
@@ -92,8 +86,6 @@ Future<Options> loadOptions() async {
   }
 
   return Options(
-    width: width,
-    height: height,
     x: x,
     y: y,
     text: text,
@@ -105,8 +97,6 @@ Future<Options> loadOptions() async {
 /// Built-in fallback configuration returned when the user config is missing,
 /// unreadable or partially invalid.
 final _defaults = Options(
-  width: 300,
-  height: 200,
   x: 100,
   y: 100,
   text: Color(0xFFFFFFFF),

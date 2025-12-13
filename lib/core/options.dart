@@ -11,12 +11,6 @@ import 'dart:ui';
 /// All fields are non-nullable and validated in the loader, ensuring that
 /// the UI never receives invalid or missing configuration values.
 class Options {
-  /// Width of the Waybox window in logical pixels.
-  final double width;
-
-  /// Height of the Waybox window in logical pixels.
-  final double height;
-
   /// Initial X position of the window on screen.
   final int x;
 
@@ -33,8 +27,6 @@ class Options {
   final Color background;
 
   const Options({
-    required this.width,
-    required this.height,
     required this.x,
     required this.y,
     required this.text,

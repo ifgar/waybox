@@ -19,6 +19,9 @@ class WayboxTheme {
   /// Border color applied to the popup window.
   final Color menuBorder;
 
+  /// Border width applied to the popup window.
+  final int menuBorderWidth;
+
   /// Text color used for menu item labels.
   final Color itemText;
 
@@ -35,6 +38,7 @@ class WayboxTheme {
     required this.menuBackground,
     required this.menuBorderRadius,
     required this.menuBorder,
+    required this.menuBorderWidth,
     required this.itemText,
     required this.itemFontFamily,
     required this.itemHover,

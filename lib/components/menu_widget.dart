@@ -54,6 +54,14 @@ class __MenuItemState extends State<_MenuItem> {
     if(widget.menu.name == "separator-space") {
       return const SizedBox(height: 8,);
     }
+
+    if(widget.menu.name == "separator-line") {
+      return Divider(
+        color: widget.theme.itemText,
+        thickness: 1,
+      );
+    }
+
     
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),

@@ -44,6 +44,7 @@ Future<WayboxTheme> loadTheme() async {
   int radius = _defaults.menuRadius;
 
   Color text = _defaults.itemText;
+  String fontFamily = _defaults.itemFontFamily;
   Color hover = _defaults.itemHover;
   Color hoverText = _defaults.itemTextHover;
 
@@ -75,6 +76,7 @@ Future<WayboxTheme> loadTheme() async {
 
     if (section == "item") {
       if (key == "text") text = _parseColor(value, _defaults.itemText);
+      if (key == "fontFamily") fontFamily = value;
       if (key == "hover") hover = _parseColor(value, _defaults.itemHover);
       if (key == "hoverText") {
         hoverText = _parseColor(value, _defaults.itemTextHover);
@@ -86,6 +88,7 @@ Future<WayboxTheme> loadTheme() async {
     menuBackground: background,
     menuRadius: radius,
     itemText: text,
+    itemFontFamily: fontFamily,
     itemHover: hover,
     itemTextHover: hoverText,
   );
@@ -97,6 +100,7 @@ final _defaults = WayboxTheme(
   menuBackground: Color(0xFF000000),
   menuRadius: 4,
   itemText: Color(0xFFFFFFFF),
+  itemFontFamily: "",
   itemHover: Color(0xFF222222),
   itemTextHover: Color(0xFFFFFFFF),
 );

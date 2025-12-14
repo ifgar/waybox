@@ -72,6 +72,7 @@ class __MenuItemState extends State<_MenuItem> {
           child: Text(
             widget.menu.name,
             style: TextStyle(
+              fontFamily: widget.theme.itemFontFamily,
               color: isHovering
                   ? widget.theme.itemTextHover
                   : widget.theme.itemText,

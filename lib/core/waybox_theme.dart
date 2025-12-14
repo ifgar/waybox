@@ -19,6 +19,9 @@ class WayboxTheme {
   /// Text color used for menu item labels.
   final Color itemText;
 
+  /// Font family used for menu item labels.
+  final String itemFontFamily;
+
   /// Background color applied when hovering over a menu item.
   final Color itemHover;
 
@@ -29,6 +32,7 @@ class WayboxTheme {
     required this.menuBackground,
     required this.menuRadius,
     required this.itemText,
+    required this.itemFontFamily,
     required this.itemHover,
     required this.itemTextHover,
   });

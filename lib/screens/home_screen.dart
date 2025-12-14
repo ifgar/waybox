@@ -158,10 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       theme.menuBorderRadius.toDouble(),
                     ),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: MenuWidget(items: items, theme: theme),
-                  ),
+                  child: MenuWidget(items: items, theme: theme),
                 ),
               ),
             ),

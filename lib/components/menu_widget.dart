@@ -23,9 +23,12 @@ class MenuWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     // Each XML entry becomes a list item. The parent widget (HomeScreen)
     // handles overall window layout and background color.
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: items.map((m) => _MenuItem(menu: m, theme: theme)).toList(),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: items.map((m) => _MenuItem(menu: m, theme: theme)).toList(),
+      ),
     );
   }
 }
@@ -52,35 +55,38 @@ class __MenuItemState extends State<_MenuItem> {
       return const SizedBox(height: 8,);
     }
     
-    return Material(
-      color: Colors.transparent,
-      borderRadius: BorderRadius.circular(4),
-      child: InkWell(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Material(
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(4),
-        hoverColor: widget.theme.itemHover,
-        onTap: () {
-          final cmd = widget.menu.command;
-          if (cmd != null && cmd.trim().isNotEmpty) {
-            // Execute the user-defined command in a bash shell.
-            Process.run("bash", ["-c", cmd.trim()]);
-          }
-        },
-        onHover: (value) {
-          setState(() {
-            isHovering = value;
-          });
-        },
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-          child: Text(
-            widget.menu.name,
-            style: TextStyle(
-              fontFamily: widget.theme.itemFontFamily,
-              color: isHovering
-                  ? widget.theme.itemTextHover
-                  : widget.theme.itemText,
-              fontSize: 14,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(4),
+          hoverColor: widget.theme.itemHover,
+          onTap: () {
+            final cmd = widget.menu.command;
+            if (cmd != null && cmd.trim().isNotEmpty) {
+              // Execute the user-defined command in a bash shell.
+              Process.run("bash", ["-c", cmd.trim()]);
+            }
+          },
+          onHover: (value) {
+            setState(() {
+              isHovering = value;
+            });
+          },
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+            child: Text(
+              widget.menu.name,
+              style: TextStyle(
+                fontFamily: widget.theme.itemFontFamily,
+                color: isHovering
+                    ? widget.theme.itemTextHover
+                    : widget.theme.itemText,
+                fontSize: 14,
+              ),
             ),
           ),
         ),

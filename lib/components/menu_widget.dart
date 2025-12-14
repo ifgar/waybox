@@ -48,6 +48,10 @@ class __MenuItemState extends State<_MenuItem> {
 
   @override
   Widget build(BuildContext context) {
+    if(widget.menu.name == "separator-space") {
+      return const SizedBox(height: 8,);
+    }
+    
     return Material(
       color: Colors.transparent,
       borderRadius: BorderRadius.circular(4),

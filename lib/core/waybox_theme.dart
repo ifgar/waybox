@@ -14,7 +14,7 @@ class WayboxTheme {
   final Color menuBackground;
 
   /// Border radius applied to the popup window.
-  final int menuRadius;
+  final int menuBorderRadius;
 
   /// Text color used for menu item labels.
   final Color itemText;
@@ -30,7 +30,7 @@ class WayboxTheme {
 
   const WayboxTheme({
     required this.menuBackground,
-    required this.menuRadius,
+    required this.menuBorderRadius,
     required this.itemText,
     required this.itemFontFamily,
     required this.itemHover,

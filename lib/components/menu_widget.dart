@@ -51,18 +51,21 @@ class __MenuItemState extends State<_MenuItem> {
 
   @override
   Widget build(BuildContext context) {
-    if(widget.menu.name == "separator-space") {
-      return const SizedBox(height: 8,);
+    if (widget.menu.name == "separator-space") {
+      return const SizedBox(height: 8);
     }
 
-    if(widget.menu.name == "separator-line") {
-      return Divider(
-        color: widget.theme.itemText,
-        thickness: 1,
+    if (widget.menu.name == "separator-line") {
+      return Divider(color: widget.theme.itemText, thickness: 2);
+    }
+
+    if (widget.menu.name == "separator-line-short") {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Divider(color: widget.theme.itemText, thickness: 2),
       );
     }
 
-    
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Material(

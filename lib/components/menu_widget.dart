@@ -56,13 +56,19 @@ class __MenuItemState extends State<_MenuItem> {
     }
 
     if (widget.menu.name == "separator-line") {
-      return Divider(color: widget.theme.itemText, thickness: 2);
+      return Divider(
+        color: widget.theme.separator,
+        thickness: widget.theme.separatorThickness.toDouble(),
+      );
     }
 
     if (widget.menu.name == "separator-line-short") {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Divider(color: widget.theme.itemText, thickness: 2),
+        child: Divider(
+          color: widget.theme.separator,
+          thickness: widget.theme.separatorThickness.toDouble(),
+        ),
       );
     }
 

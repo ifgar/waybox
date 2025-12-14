@@ -150,7 +150,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Container(
                   decoration: BoxDecoration(
                     color: theme.menuBackground,
-                    border: Border.all(color: theme.menuBorder),
+                    border: Border.all(
+                      color: theme.menuBorder,
+                      width: theme.menuBorderWidth.toDouble(),
+                    ),
                     borderRadius: BorderRadius.circular(
                       theme.menuBorderRadius.toDouble(),
                     ),

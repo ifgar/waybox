@@ -50,6 +50,9 @@ Future<WayboxTheme> loadTheme() async {
   Color itemHover = _defaults.itemHover;
   Color itemHoverText = _defaults.itemTextHover;
 
+  Color separator = _defaults.separator;
+  int separatorThickness = _defaults.separatorThickness;
+
   for (final raw in lines) {
     final line = raw.trim();
     if (line.isEmpty) continue;
@@ -88,6 +91,13 @@ Future<WayboxTheme> loadTheme() async {
         itemHoverText = _parseColor(value, _defaults.itemTextHover);
       }
     }
+
+    if (section == "separator") {
+      if (key == "color") separator = _parseColor(value, _defaults.separator);
+      if (key == "thickness") {
+        separatorThickness = int.tryParse(value) ?? _defaults.separatorThickness;
+      }
+    }
   }
 
   return WayboxTheme(
@@ -99,6 +109,8 @@ Future<WayboxTheme> loadTheme() async {
     itemFontFamily: itemFontFamily,
     itemHover: itemHover,
     itemTextHover: itemHoverText,
+    separator: separator,
+    separatorThickness: separatorThickness,
   );
 }
 
@@ -113,6 +125,8 @@ final _defaults = WayboxTheme(
   itemFontFamily: "",
   itemHover: Color(0xFF222222),
   itemTextHover: Color(0xFFFFFFFF),
+  separator: Color(0xFFFFFFFF),
+  separatorThickness: 1,
 );
 
 /// Parses a color from a hex string in the formats:

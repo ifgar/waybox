@@ -34,6 +34,12 @@ class WayboxTheme {
   /// Text color applied when hovering over a menu item.
   final Color itemTextHover;
 
+  /// Color used for separators.
+  final Color separator;
+
+  /// Thickness of separator lines.
+  final int separatorThickness;
+
   const WayboxTheme({
     required this.menuBackground,
     required this.menuBorderRadius,
@@ -43,5 +49,7 @@ class WayboxTheme {
     required this.itemFontFamily,
     required this.itemHover,
     required this.itemTextHover,
+    required this.separator,
+    required this.separatorThickness,
   });
 }

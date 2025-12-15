@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:waybox/core/app_exit.dart';
 import 'package:waybox/core/cli_args.dart';
 import 'package:waybox/core/config_init.dart';
 import 'package:waybox/screens/home_screen.dart';
@@ -64,7 +65,7 @@ void main(List<String> args) async {
   // Initialize callbacks (e.g., for Escape key).
   WaylandLayerShell.initCallbacks();
   WaylandLayerShell.onEscape = () {
-    exit(0);
+    requestExit();
   };
 
   runApp(MainApp(shell: waylandLayerShellPlugin, cliArgs: cliArgs));
@@ -83,8 +84,12 @@ Future<void> _handleStatusAndPid(List<String> args) async {
 
   final pidFile = File('$runtimeDir/waybox.pid');
 
-  if (args.contains("--status")) {
-    stdout.writeln(await pidFile.exists() ? "true" : "false");
+  if (args.contains('--status')) {
+    Process.run('pkill', ['-SIGRTMIN+8', 'waybar'], runInShell: false); // Notify waybar to refresh
+    final isOpen = await pidFile.exists();
+    stdout.writeln(
+      '{"alt":"${isOpen ? "true" : "false"}"}',
+    );
     exit(0);
   }
 

@@ -27,9 +27,6 @@ import 'package:wayland_layer_shell/wayland_layer_shell.dart';
 /// The window is *not* an XDG toplevel, so methods from `window_manager`
 /// do not apply in this mode.
 void main(List<String> args) async {
-  // Handle --status and previous instance PID management.
-  await _handleStatusAndPid(args);
-
   WidgetsFlutterBinding.ensureInitialized();
 
   await initConfigFiles();
@@ -58,7 +55,7 @@ void main(List<String> args) async {
 
   // Set exclusive keyboard mode to capture all keyboard input.
   waylandLayerShellPlugin.setKeyboardMode(
-    ShellKeyboardMode.keyboardModeOnDemand,
+    ShellKeyboardMode.keyboardModeOnDemand
   );
 
   // Initialize callbacks (e.g., for Escape key).
@@ -67,20 +64,16 @@ void main(List<String> args) async {
     exit(0);
   };
 
+  // Kill any previous instance.
+  await _killPreviousInstance();
+
   runApp(MainApp(shell: waylandLayerShellPlugin, cliArgs: cliArgs));
 }
 
-/// Handle --status argument and manage PID file for single instance.
-/// If --status is provided, prints "true" if an instance is running,
-/// "false" otherwise, then exits.
-/// If another instance is running, terminates it before proceeding.
-Future<void> _handleStatusAndPid(List<String> args) async {
-  final pidFile = File('/run/user/${Platform.environment['UID']}/waybox.pid');
-  
-  if (args.contains("--status")) {
-    stdout.writeln(await pidFile.exists() ? "true" : "false");
-    exit(0);
-  }
+/// Kills any previous instance of the application by reading its PID
+/// from a temporary file and sending it a SIGTERM signal.
+Future<void> _killPreviousInstance() async {
+  final pidFile = File("${Directory.systemTemp.path}/waybox.pid");
 
   if (await pidFile.exists()) {
     final oldPid = int.tryParse(await pidFile.readAsString());
@@ -92,14 +85,6 @@ Future<void> _handleStatusAndPid(List<String> args) async {
   }
 
   await pidFile.writeAsString('$pid');
-
-  void cleanup() {
-    if (pidFile.existsSync()) pidFile.deleteSync();
-    exit(0);
-  }
-
-  ProcessSignal.sigterm.watch().listen((_) => cleanup());
-  ProcessSignal.sigint.watch().listen((_) => cleanup());
 }
 
 /// Root widget of the application.

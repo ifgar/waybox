@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:waybox/components/menu_widget.dart';
+import 'package:waybox/core/app_exit.dart';
 import 'package:waybox/core/cli_args.dart';
 import 'package:waybox/core/hypr_monitors.dart';
 import 'package:waybox/core/menu.dart';
@@ -133,9 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Positioned.fill(
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onTap: () {
-                exit(0);
-              },
+              onTap: () => requestExit(),
               child: Container(color: Colors.transparent),
             ),
           ),
@@ -145,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
             left: widget.cliArgs.x?.toDouble() ?? 0.0,
             top: widget.cliArgs.y?.toDouble() ?? 0.0,
             child: MouseRegion(
-              onExit: (_) => exit(0),
+              onExit: (_) => requestExit(),
               child: IntrinsicWidth(
                 child: Container(
                   decoration: BoxDecoration(

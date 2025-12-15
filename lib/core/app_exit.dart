@@ -1,8 +1,16 @@
 import 'dart:io';
 
-final _pidFile = File('/run/user/${Platform.environment['UID']}/waybox.pid');
+File _pidFile() {
+  final runtimeDir = Platform.environment['XDG_RUNTIME_DIR'];
+  if (runtimeDir == null) {
+    stderr.writeln('XDG_RUNTIME_DIR not set');
+    exit(1);
+  }
+  return File('$runtimeDir/waybox.pid');
+}
 
 void requestExit() {
-  if (_pidFile.existsSync()) _pidFile.deleteSync();
+  final pidFile = _pidFile();
+  if (pidFile.existsSync()) pidFile.deleteSync();
   exit(0);
 }

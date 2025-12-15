@@ -119,13 +119,13 @@ Future<WayboxTheme> loadTheme() async {
 final _defaults = WayboxTheme(
   menuBackground: Color(0xFF000000),
   menuBorderRadius: 4,
-  menuBorder: Color(0x00000000),
+  menuBorder: Color(0xFF202020),
   menuBorderWidth: 0,
   itemText: Color(0xFFFFFFFF),
   itemFontFamily: "",
   itemHover: Color(0xFF222222),
   itemTextHover: Color(0xFFFFFFFF),
-  separator: Color(0xFFFFFFFF),
+  separator: Color(0xFF2C2C2C),
   separatorThickness: 1,
 );
 

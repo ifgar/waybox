@@ -55,38 +55,67 @@ You can edit them at any time without rebuilding the app.
 
 
 ### Configuration files
-#### `waybox.xml`
+### `waybox.xml`
 ```xml
 <menu name="root">
   <menu name="Calculator" command="gnome-calculator" />
   <menu name="Browser" command="firefox" />
+  <menu name="separator-space" />
   <menu name="Files" command="thunar" />
 </menu>
 ```
 
-#### `theme.conf`
+Each `<menu>` entry represents a single row in the menu.
+
+- Entries **with `command`** launch the specified command when clicked.
+- Entries **without `command`** are rendered as text-only items and do not launch anything.
+- Some text-only entries are **special reserved names** that render visual separators instead of text, see below.
+
+### Separators
+| option                  | description                                                    |
+| ----------------------- | -------------------------------------------------------------- |
+| `separator-space`       | Empty vertical spacer with a fixed height of 8px.             |
+| `separator-line`        | Full-width horizontal divider that touches the window borders. |
+| `separator-line-short`  | Horizontal divider with 8px padding on each side.             |
+
+### `theme.conf`
 ```ini
 [menu]
 background= #1F2335
-radius= 4
+borderRadius= 4
+border= #7DCFFF
+borderWidth= 0
 
 [item]
 text= #C0CAF5
+fontFamily=
 hover= #292E42
 hoverText= #7DCFFF
+
+[separator]
+color= #292E42
+thickness= 1
 ```
 
-#### Field reference
-- **background**: window background color.
-- **radius**: window border radius.
-- **text**: item text color.  
-- **hover**: item background color while hovering.  
-- **hoverText**: item text color while hovering.
+### Field reference
+| option         | typeof  | default   | description                           |
+| -------------- | ------- | --------- | ------------------------------------- |
+| `background`   | color   | `#000000` | Window background color.              |
+| `borderRadius` | integer | `4`       | Window border radius.                 |
+| `border`       | color   | `#202020` | Window border color.                  |
+| `borderWidth`  | integer | `0`       | Window border width. Set to `0` to disable the border. |
+| `text`         | color   | `#FFFFFF` | Item text color.                      |
+| `fontFamily`   | string  |           | Item text font family. Leave empty to use the system default. |
+| `hover`        | color   | `#222222` | Item background color while hovering. |
+| `hoverText`    | color   | `#FFFFFF` | Item text color while hovering.       |
+| `color`        | color   | `#2C2C2C` | Separator color.                      |
+| `thickness`    | integer | `1`       | Separator thickness.                  |
 
-#### Notes
+
+### Notes
 - Missing values fall back to internal defaults.  
 - Changes apply on the next launch.  
-- **Hyprland:** without `layerrule = noanim, waybox` the window will first spawn centered and then “jump” to `(x, y)`, which is undesirable.
+- **Hyprland:** without `layerrule = noanim, waybox` the window will first spawn centered and then “jump” to your specified coordinates, which is undesirable. Add this rule to your `hyprland.conf` to avoid this behavior.
 
 
 ## Usage
@@ -96,7 +125,7 @@ Waybox is typically launched from Waybar or any scriptable launcher.
 ```json
   "custom/waybox": {
     "format": "",
-    "on-click": "waybox --x 2290 --y 4",
+    "on-click": "waybox --x 1820 --y 4",
     "tooltip": false
   },
 ```

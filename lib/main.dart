@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:waybox/core/app_exit.dart';
 import 'package:waybox/core/cli_args.dart';
 import 'package:waybox/core/config_init.dart';
 import 'package:waybox/screens/home_screen.dart';
@@ -27,6 +28,8 @@ import 'package:wayland_layer_shell/wayland_layer_shell.dart';
 /// The window is *not* an XDG toplevel, so methods from `window_manager`
 /// do not apply in this mode.
 void main(List<String> args) async {
+  await _killPreviousInstance();
+
   WidgetsFlutterBinding.ensureInitialized();
 
   await initConfigFiles();
@@ -55,25 +58,28 @@ void main(List<String> args) async {
 
   // Set exclusive keyboard mode to capture all keyboard input.
   waylandLayerShellPlugin.setKeyboardMode(
-    ShellKeyboardMode.keyboardModeOnDemand
+    ShellKeyboardMode.keyboardModeOnDemand,
   );
 
   // Initialize callbacks (e.g., for Escape key).
   WaylandLayerShell.initCallbacks();
   WaylandLayerShell.onEscape = () {
-    exit(0);
+    requestExit();
   };
-
-  // Kill any previous instance.
-  await _killPreviousInstance();
 
   runApp(MainApp(shell: waylandLayerShellPlugin, cliArgs: cliArgs));
 }
 
-/// Kills any previous instance of the application by reading its PID
-/// from a temporary file and sending it a SIGTERM signal.
+/// Handles existing PID file and creates a new one for the current process.
+/// This ensures that only one instance of Waybox runs at a time.
+/// If a previous instance is found, it is terminated.
 Future<void> _killPreviousInstance() async {
-  final pidFile = File("${Directory.systemTemp.path}/waybox.pid");
+  final runtimeDir = Platform.environment['XDG_RUNTIME_DIR'];
+  if (runtimeDir == null) {
+    stderr.writeln("XDG_RUNTIME_DIR not set");
+    exit(1);
+  }
+  final pidFile = File("$runtimeDir/waybox.pid");
 
   if (await pidFile.exists()) {
     final oldPid = int.tryParse(await pidFile.readAsString());
@@ -83,8 +89,17 @@ Future<void> _killPreviousInstance() async {
       } catch (_) {}
     }
   }
-
   await pidFile.writeAsString('$pid');
+
+  void cleanup() {
+    if (pidFile.existsSync()) {
+      pidFile.deleteSync();
+    }
+    requestExit();
+  }
+
+  ProcessSignal.sigint.watch().listen((_) => cleanup());
+  ProcessSignal.sigterm.watch().listen((_) => cleanup());
 }
 
 /// Root widget of the application.

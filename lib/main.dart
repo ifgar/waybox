@@ -67,7 +67,7 @@ void main(List<String> args) async {
     requestExit();
   };
 
-  runApp(MainApp(shell: waylandLayerShellPlugin, cliArgs: cliArgs));
+  runApp(MainApp(cliArgs: cliArgs));
 }
 
 /// Handles existing PID file and creates a new one for the current process.
@@ -107,15 +107,14 @@ Future<void> _killPreviousInstance() async {
 /// The UI consists of a single `HomeScreen` rendered without additional
 /// routes, as Waybox is meant to be a lightweight, single-purpose popup.
 class MainApp extends StatelessWidget {
-  final WaylandLayerShell shell;
   final CliArgs cliArgs;
-  const MainApp({super.key, required this.shell, required this.cliArgs});
+  const MainApp({super.key, required this.cliArgs});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(shell: shell, cliArgs: cliArgs),
+      home: HomeScreen(cliArgs: cliArgs),
     );
   }
 }

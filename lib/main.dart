@@ -93,9 +93,12 @@ Future<void> _killPreviousInstance() async {
 
   void cleanup() {
     if (pidFile.existsSync()) {
-      pidFile.deleteSync();
+      final current = pidFile.readAsStringSync();
+      // Only remove the PID file if this instance owns it.
+      // Prevents a newer instance from losing its PID when an old one exits.
+      if (current.trim() == pid.toString()) pidFile.deleteSync();
     }
-    requestExit();
+    exit(0);
   }
 
   ProcessSignal.sigint.watch().listen((_) => cleanup());

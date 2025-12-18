@@ -33,15 +33,6 @@ flutter build linux --release
 ./build/linux/x64/release/bundle/waybox
 ```
 
-### Hyprland note
-Hyprland applies animations to layer-shell surfaces by default. If this rule is not added, Waybox will first appear centered on the screen and then slide to the user-defined coordinates, which is undesirable.
-
-To disable this behavior, add the following to your `hyprland.conf`:
-
-```
-layerrule = noanim, waybox
-```
-
 
 ## Configuration
 Waybox stores user-editable configuration files in:
@@ -115,7 +106,7 @@ thickness= 1
 ### Notes
 - Missing values fall back to internal defaults.  
 - Changes apply on the next launch.  
-- **Hyprland:** without `layerrule = noanim, waybox` the window will first spawn centered and then “jump” to your specified coordinates, which is undesirable. Add this rule to your `hyprland.conf` to avoid this behavior.
+- **Hyprland:** To disable the slight fade-in / fade-out animation when launching Waybox, add `layerrule = noanim, waybox` to your `hyprland.conf`. 
 
 
 ## Usage

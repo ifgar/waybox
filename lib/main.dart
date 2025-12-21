@@ -98,6 +98,7 @@ Future<void> _killPreviousInstance() async {
     exit(1);
   }
   final pidFile = File("$runtimeDir/waybox.pid");
+  final stateFile = File("$runtimeDir/waybox.state");
 
   if (await pidFile.exists()) {
     final oldPid = int.tryParse(await pidFile.readAsString());
@@ -115,6 +116,9 @@ Future<void> _killPreviousInstance() async {
       // Only remove the PID file if this instance owns it.
       // Prevents a newer instance from losing its PID when an old one exits.
       if (current.trim() == pid.toString()) pidFile.deleteSync();
+    }
+    if (stateFile.existsSync()) {
+      stateFile.deleteSync();
     }
     exit(0);
   }

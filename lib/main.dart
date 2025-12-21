@@ -35,6 +35,7 @@ void main(List<String> args) async {
   await initConfigFiles();
 
   final cliArgs = parseCliArgs(args);
+  _createStateFile(cliArgs);
 
   // Initialize Wayland layer-shell surface.
   final waylandLayerShellPlugin = WaylandLayerShell();
@@ -68,6 +69,23 @@ void main(List<String> args) async {
   };
 
   runApp(MainApp(cliArgs: cliArgs));
+}
+
+/// Generates a state file only if a particular instance of waybox is created.
+/// Improves script compatibility so the same script doesn't trigger on
+/// different waybox instances.
+Future<void> _createStateFile(CliArgs cliArgs) async {
+  // TODO: make non-specific
+  if (cliArgs.menuFile == "waybox.xml") {
+    final runtimeDir = Platform.environment['XDG_RUNTIME_DIR'];
+    if (runtimeDir == null) {
+      stderr.writeln("XDG_RUNTIME_DIR not set");
+      exit(1);
+    }
+    final stateFile = File("$runtimeDir/waybox.state");
+
+    await stateFile.writeAsString("");
+  }
 }
 
 /// Handles existing PID file and creates a new one for the current process.

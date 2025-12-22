@@ -28,6 +28,9 @@ class WayboxTheme {
   /// Font family used for menu item labels.
   final String itemFontFamily;
 
+  /// Font size used for menu item labels.
+  final int itemFontSize;
+
   /// Background color applied when hovering over a menu item.
   final Color itemHover;
 
@@ -47,6 +50,7 @@ class WayboxTheme {
     required this.menuBorderWidth,
     required this.itemText,
     required this.itemFontFamily,
+    required this.itemFontSize,
     required this.itemHover,
     required this.itemTextHover,
     required this.separator,

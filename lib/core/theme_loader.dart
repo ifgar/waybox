@@ -47,6 +47,7 @@ Future<WayboxTheme> loadTheme() async {
 
   Color itemText = _defaults.itemText;
   String itemFontFamily = _defaults.itemFontFamily;
+  int itemFontSize = _defaults.itemFontSize;
   Color itemHover = _defaults.itemHover;
   Color itemHoverText = _defaults.itemTextHover;
 
@@ -86,6 +87,7 @@ Future<WayboxTheme> loadTheme() async {
     if (section == "item") {
       if (key == "text") itemText = _parseColor(value, _defaults.itemText);
       if (key == "fontFamily") itemFontFamily = value;
+      if (key == "fontSize") itemFontSize = int.tryParse(value) ?? 14;
       if (key == "hover") itemHover = _parseColor(value, _defaults.itemHover);
       if (key == "hoverText") {
         itemHoverText = _parseColor(value, _defaults.itemTextHover);
@@ -107,6 +109,7 @@ Future<WayboxTheme> loadTheme() async {
     menuBorderWidth: menuBorderWidth,
     itemText: itemText,
     itemFontFamily: itemFontFamily,
+    itemFontSize: itemFontSize,
     itemHover: itemHover,
     itemTextHover: itemHoverText,
     separator: separator,
@@ -123,6 +126,7 @@ final _defaults = WayboxTheme(
   menuBorderWidth: 0,
   itemText: Color(0xFFFFFFFF),
   itemFontFamily: "",
+  itemFontSize: 14,
   itemHover: Color(0xFF222222),
   itemTextHover: Color(0xFFFFFFFF),
   separator: Color(0xFF2C2C2C),

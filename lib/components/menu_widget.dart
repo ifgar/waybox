@@ -102,7 +102,7 @@ class __MenuItemState extends State<_MenuItem> {
                 color: isHovering
                     ? widget.theme.itemTextHover
                     : widget.theme.itemText,
-                fontSize: 14,
+                fontSize: widget.theme.itemFontSize.toDouble(),
               ),
             ),
           ),

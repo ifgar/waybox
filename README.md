@@ -80,6 +80,7 @@ borderWidth= 0
 [item]
 text= #C0CAF5
 fontFamily=
+fontSize=
 hover= #292E42
 hoverText= #7DCFFF
 
@@ -96,7 +97,8 @@ thickness= 1
 | `border`       | color   | `#202020` | Window border color.                  |
 | `borderWidth`  | integer | `0`       | Window border width. Set to `0` to disable the border. |
 | `text`         | color   | `#FFFFFF` | Item text color.                      |
-| `fontFamily`   | string  |           | Item text font family. Leave empty to use the system default. |
+| `fontFamily`   | string  |           | Item text font family.                |
+| `fontSize`     | integer | `14`      | Item text font size.                  |
 | `hover`        | color   | `#222222` | Item background color while hovering. |
 | `hoverText`    | color   | `#FFFFFF` | Item text color while hovering.       |
 | `color`        | color   | `#2C2C2C` | Separator color.                      |

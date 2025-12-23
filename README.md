@@ -1,3 +1,5 @@
+![waybox banner](screenshots/waybox_banner01.png)
+
 # waybox
 Waybox is a minimal, configurable launcher menu designed to be triggered from Waybar or any external command.
 
@@ -143,9 +145,6 @@ You can have as many instances of waybox as you desire. Just specify a different
 ```
 Defaults to `waybox.xml` when `--menu` is omitted.
 
-
-## Screenshot
-![waybox screenshot](screenshots/waybox.png)
 
 ## License
 This project is licensed under the MIT License. See the `LICENSE` file for details.
